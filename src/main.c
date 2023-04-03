@@ -3,18 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "definitions.h"
 
-typedef struct {
-  uint8_t *arr;
-  size_t count;
-} Bytes;
-
-void printHexString(char *prefix, Bytes bytes) {
-  printf("%s: 0x", prefix);
-  for (size_t i = 0; i < bytes.count; i++)
-    printf("%02x", bytes.arr[i]);
-  printf("\n");
-}
 
 Bytes getSeed(int argc, char **argv) {
   if (argc != 2) {
@@ -56,5 +46,7 @@ Bytes getSeed(int argc, char **argv) {
 int main(int argc, char **argv) {
   Bytes seed = getSeed(argc, argv);
   printHexString("seed", seed);
+  Bytes privateKey = keccak256(seed);
+  printHexString("private key", privateKey);
   return 0;
 }
