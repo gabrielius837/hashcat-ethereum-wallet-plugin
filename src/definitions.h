@@ -2,11 +2,12 @@
 
 #define KECCAK256_LENGTH 32
 
+#include "keccak256.h"
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <wolfssl/options.h>
-#include <wolfssl/wolfcrypt/hash.h>
+#include <stdlib.h>
 
 typedef struct {
   uint8_t *arr;

@@ -1,5 +1,5 @@
 #include "definitions.h"
-#include <stdlib.h>
+#include "keccak256.h"
 
 void printHexString(char *prefix, Bytes bytes) {
   printf("%s: 0x", prefix);
@@ -9,8 +9,11 @@ void printHexString(char *prefix, Bytes bytes) {
 }
 
 Bytes keccak256(Bytes input) {
+  SHA3_CTX ctx;
+  keccak_init(&ctx);
+  keccak_update(&ctx, input.arr, input.count);
   uint8_t *output = malloc(KECCAK256_LENGTH);
-  wc_Sha3_256Hash(input.arr, input.count, output);
+  keccak_final(&ctx, output);
   Bytes result = { output, KECCAK256_LENGTH };
   return result;
 }

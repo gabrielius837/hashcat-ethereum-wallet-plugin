@@ -1,6 +1,6 @@
 # Compiler options
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -I/usr/include/wolfssl
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11
 
 # Source files and object files
 SRCDIR = src
@@ -12,17 +12,17 @@ OBJS = $(SRCS:.c=.o)
 TARGET = generate
 
 # Libraries
-LIBS = -lwolfssl
+LIBS = -lc
 
 # Build target
 all: ${BINDIR}/$(TARGET)
 
 ${BINDIR}/$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) $(LIBS) -o $@ $^
 
 # Object files
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(LIBS) -c -o $@ $<
 
 # Clean up
 clean:
