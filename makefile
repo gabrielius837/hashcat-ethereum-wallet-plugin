@@ -1,6 +1,6 @@
 # Compiler options
 CC = gcc
-CFLAGS = -Wall -Wextra -Wpedantic -std=c11
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -I./include
 
 # Source files and object files
 SRCDIR = src
@@ -12,17 +12,17 @@ OBJS = $(SRCS:.c=.o)
 TARGET = generate
 
 # Libraries
-LIBS = -lc
+LIBS = -L./lib -lsecp256k1
 
 # Build target
 all: ${BINDIR}/$(TARGET)
 
 ${BINDIR}/$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) 
 
 # Object files
 %.o: %.c
-	$(CC) $(CFLAGS) $(LIBS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 # Clean up
 clean:

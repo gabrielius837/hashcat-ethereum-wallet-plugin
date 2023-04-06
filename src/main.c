@@ -48,5 +48,7 @@ int main(int argc, char **argv) {
   printHexString("seed", seed);
   Bytes privateKey = keccak256(seed);
   printHexString("private key", privateKey);
+  Bytes publicKey = generatePublicKey(privateKey);
+  printHexString("uncompressed key", publicKey);
   return 0;
 }
