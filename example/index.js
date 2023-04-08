@@ -36,7 +36,6 @@ const computePrivateKey = (seed) => {
 
 const computePublicKey = (privateKey) => {
     const digest = getPublicKey(privateKey, false)
-    console.log('uncompressed key:', bytesToHex(digest))
     const slice = digest.subarray(1)
     const hash = keccak_256(slice)
     return hash.subarray(12)
