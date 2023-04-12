@@ -4,23 +4,34 @@
 #include <string.h>
 
 void printHexString(char *prefix, Bytes bytes) {
-  printf("%s: 0x", prefix);
+  printf("%s 0x", prefix);
   for (size_t i = 0; i < bytes.count; i++)
     printf("%02x", bytes.arr[i]);
   printf("\n");
 }
 
 int keccak256(Bytes *input, Bytes *output) {
-  // no possible indication if something went wrong...
-  SHA3_CTX ctx;
-  keccak_init(&ctx);
-  keccak_update(&ctx, input->arr, input->count);
+  int statusCode;
+  Keccak_HashInstance hashInstance;
+  Keccak_HashInitialize(&hashInstance, 1088, 512, KECCAK256_LENGTH, 0x01);
+
+  if ((statusCode = Keccak_HashUpdate(&hashInstance, input->arr, input->count * 8)) != 0) {
+    fprintf(stderr, "failed to process input\n");
+    return statusCode;
+  }
+
   uint8_t *digest = malloc(KECCAK256_LENGTH);
   if (!digest) {
     fprintf(stderr, "failed to allocate bytes for keccak256\n");
     return 1;
   }
-  keccak_final(&ctx, digest);
+
+  if ((statusCode = Keccak_HashSqueeze(&hashInstance, digest, KECCAK256_LENGTH * 8)) != 0) {
+    fprintf(stderr, "failed to retrieve digest\n");
+    free(digest);
+    return statusCode;
+  }
+
   output->arr = digest;
   output->count = KECCAK256_LENGTH;
   return 0;

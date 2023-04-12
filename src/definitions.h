@@ -4,8 +4,8 @@
 #define UNCOMPRESSED_KEY_LENGTH 65
 #define ADDRESS_LENGTH 20
 
-#include "keccak256.h"
 #include "secp256k1.h"
+#include "keccak/KeccakHash.h"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdio.h>
